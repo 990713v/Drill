@@ -3,17 +3,14 @@ import game_world
 import game_framework
 
 class Brick:
-    image = None
-
-    def __init__(self):
-        if Brick.image == None:
-            Brick.image = load_image('brick180x40.png')
+    def __init__(self):        
+        Brick.image = load_image('brick180x40.png')
         self.x, self.y = 1600 // 2, 200
         self.speed = 200
         self.dir = 1
 
     def get_bb(self):
-        return self.x - 90, self.y - 20, self.x + 90, self.y + 20 ###
+        return self.x - 90, self.y - 20, self.x + 90, self.y + 20
 
     def draw(self):
         self.image.draw(self.x, self.y, 180, 40)
