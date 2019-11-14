@@ -63,7 +63,7 @@ class IdleState:
         boy.y += boy.accelation * game_framework.frame_time
 
         if boy.jumping or boy.dir != 0 and boy.falling:
-            boy.accelation -= RUN_SPEED_PPS * game_framework.frame_time * 4
+            boy.accelation -= RUN_SPEED_PPS * game_framework.frame_time * 7
             if boy.y < 90:
                 boy.y = 90
                 boy.jumping = 0
@@ -108,7 +108,7 @@ class RunState:
         boy.x = clamp(25, boy.x, 1600 - 25)
         boy.y += boy.accelation * game_framework.frame_time
         if boy.jumping or boy.dir != 0:
-            boy.accelation -= RUN_SPEED_PPS * game_framework.frame_time * 5
+            boy.accelation -= RUN_SPEED_PPS * game_framework.frame_time * 7
             if boy.y < 90:
                 boy.y = 90
                 boy.accelation = 0
