@@ -27,7 +27,6 @@ class Ball:
         self.fall_speed = 0
 
 
-
 # fill here
 class BigBall(Ball):
     MIN_FALL_SPEED = 50 # 50pps = 1.5 m/s
@@ -48,7 +47,7 @@ class BigBall(Ball):
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        draw_ractangle(*self.get_bb())
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.y -= self.fall_speed * game_framework.frame_time

@@ -45,10 +45,9 @@ class IdleState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
-        elif event == SPACE_DOWN:
+        elif event == SPACE:
             boy.jumping = 1
-        elif event == SPACE_UP:
-            boy.jumping = 0
+            boy.accelation = RUN_SPEED_PPS * 4
         boy.timer = 1000
 
     @staticmethod
@@ -61,17 +60,16 @@ class IdleState:
         boy.timer -= 1
         if boy.timer == 0:
             boy.add_event(SLEEP_TIMER)
+        boy.y += boy.accelation * game_framework.frame_time
 
-        #점프상태
-        if boy.jumping == 1:
-            boy.y += RUN_SPEED_PPS * game_framework.frame_time * 4
-            if boy.y >= 330:
-                boy.jumping = 2
-        if boy.jumping == 2:
-            boy.y -= RUN_SPEED_PPS * game_framework.frame_time * 4
-            if boy.y <= 90:
+        if boy.jumping or boy.dir != 0 and boy.falling:
+            boy.accelation -= RUN_SPEED_PPS * game_framework.frame_time * 4
+            if boy.y < 90:
                 boy.y = 90
                 boy.jumping = 0
+                boy.accelation = 0                
+        if boy.timer == 0:
+            boy.add_event(SLEEP_TIMER)
 
     @staticmethod
     def draw(boy):
@@ -93,11 +91,9 @@ class RunState:
             boy.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
             boy.velocity += RUN_SPEED_PPS
-        elif event == SPACE_DOWN:
+        elif event == SPACE:
             boy.jumping = 1
-        elif event == SPACE_UP:
-            boy.jumping = 0
-                        
+            boy.jumping = RUN_SPEED_PPS * 4
         boy.dir = clamp(-1, boy.velocity, 1)
 
     @staticmethod
@@ -110,6 +106,13 @@ class RunState:
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.x += boy.velocity * game_framework.frame_time
         boy.x = clamp(25, boy.x, 1600 - 25)
+        boy.y += boy.accelation * game_framework.frame_time
+        if boy.jumping or boy.dir != 0:
+            boy.accelation -= RUN_SPEED_PPS * game_framework.frame_time * 5
+            if boy.y < 90:
+                boy.y = 90
+                boy.accelation = 0
+                boy.jumping = 0
 
     @staticmethod
     def draw(boy):
@@ -160,7 +163,10 @@ class Boy:
         self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
         self.jumping = 0
+        self.falling = 0
         self.velocity = 0
+        self.brickspeed = 0
+        self.accelation = 0
         self.frame = 0
         self.event_que = []
         self.cur_state = IdleState
