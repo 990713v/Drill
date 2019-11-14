@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 from ball import Ball
+from brick import Brick
 
 import game_world
 

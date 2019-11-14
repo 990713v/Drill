@@ -2,7 +2,6 @@ import random
 from pico2d import *
 import game_world
 import game_framework
-from brick import Brick
 
 class Ball:
     image = None
@@ -23,18 +22,10 @@ class Ball:
 
     def update(self):
         self.y -= self.fall_speed * game_framework.frame_time
-        if self.dir == 1:
-            self.x += self.velocity * game_framework.frame_time
-            if self.x >= 1450:
-                self.dir = -1
-        elif self.dir == -1:
-            self.x -= self.velocity * game_framework.frmae_time
-            if self.x <= 150:
-                self.dir = 1
 
     def stop(self):
         self.fall_speed = 0
-        self.velocity = 0
+
 
 
 # fill here
@@ -54,3 +45,10 @@ class BigBall(Ball):
 
     def get_bb(self):
         return self.x - 20, self.y - 20, self.x + 20, self.y + 20
+
+    def draw(self):
+        self.image.draw(self.x, self.y)
+        draw_ractangle(*self.get_bb())
+
+    def update(self):
+        self.y -= self.fall_speed * game_framework.frame_time
