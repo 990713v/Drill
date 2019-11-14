@@ -49,7 +49,7 @@ def enter():
 
     global brick
     brick = Brick()
-    game_world.add_object(brick, 2)
+    game_world.add_object(brick, 1)
 
 
 
@@ -88,8 +88,9 @@ def update():
             #print("COLLISION")
             
     for ball in balls:
-        if collide(grass, ball):
+        if collide(grass, ball) or collide(brick, ball):
             ball.stop()
+
     #delay(0.9) # Frame Time 길어지면 문제 발생, 강제로 로직을 느리게!->망
 
 

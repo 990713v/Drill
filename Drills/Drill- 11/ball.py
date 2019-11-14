@@ -2,6 +2,7 @@ import random
 from pico2d import *
 import game_world
 import game_framework
+from brick import Brick
 
 class Ball:
     image = None
