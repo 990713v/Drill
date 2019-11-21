@@ -7,20 +7,19 @@ import game_framework
 import game_world
 
 from boy import Boy
-from grass import Grass
-from ball import Ball, BigBall
-from brick import Brick
+from ball import Ball
+from ground import Ground
+from zombie import Zombie
+
 
 name = "MainState"
 
 boy = None
-grass = None
-brick = None
+zombie = None
 balls = []
-big_balls = []
-
 
 def collide(a, b):
+    # fill here
     left_a, bottom_a, right_a, top_a = a.get_bb()
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
@@ -28,10 +27,13 @@ def collide(a, b):
     if right_a < left_b: return False
     if top_a < bottom_b: return False
     if bottom_a > top_b: return False
-    
+
     return True
 
 
+
+def get_boy():
+    return boy
 
 
 def enter():
@@ -39,21 +41,16 @@ def enter():
     boy = Boy()
     game_world.add_object(boy, 1)
 
-    global grass
-    grass = Grass()
-    game_world.add_object(grass, 0)
-
     global balls
-    balls = [Ball() for i in range(10)] + [BigBall() for i in range(10)]
-    game_world.add_objects(balls, 1)
+    balls = [Ball() for i in range(10)]
+    game_world.add_object(balls, 1)
 
-    global brick
-    brick = Brick()
-    game_world.add_object(brick, 1)
+    global zombie
+    zombie = Zombie()
+    game_world.add_object(zombie, 1)
 
-
-
-
+    ground = Ground()
+    game_world.add_object(ground, 0)
 
 def exit():
     game_world.clear()
@@ -85,13 +82,7 @@ def update():
         if collide(boy, ball):
             balls.remove(ball)
             game_world.remove_object(ball)
-            #print("COLLISION")
-            
-    for ball in balls:
-        if collide(grass, ball) or collide(brick, ball):
-            ball.stop()
 
-    #delay(0.9) # Frame Time 길어지면 문제 발생, 강제로 로직을 느리게!->망
 
 
 def draw():
